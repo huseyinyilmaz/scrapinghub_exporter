@@ -34,7 +34,7 @@ async fn get_settings(s: Arc<settings::Settings>) -> Result<impl warp::Reply, In
 
 async fn get_metrics(s: Arc<settings::Settings>) -> Result<impl warp::Reply, Infallible> {
     let start = time::Instant::now();
-    let result  = scrapinghub::check_api(&s).await;
+    let result  = scrapinghub::check_api(&s).await.unwrap();
     let duration = start.elapsed();
     Ok(vec![
         result.to_string(),

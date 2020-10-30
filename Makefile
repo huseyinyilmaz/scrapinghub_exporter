@@ -2,7 +2,7 @@ VERSION = $(shell cargo pkgid | sed 's!.*\:!!')
 version:
 	@echo "$(VERSION)"
 run:
-	WEB_EXPORTER_LOG_LEVEL=info cargo run
+	WEB_EXPORTER_LOG_LEVEL=debug cargo run
 # before releasing update version in cargo.toml file and run prerelease.
 prerelease:
 	cargo generate-lockfile
