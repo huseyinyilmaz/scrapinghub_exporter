@@ -1,13 +1,14 @@
-mod settings;
 mod scrapinghub;
-use std::sync::Arc;
+mod settings;
+mod results;
+
 use std::convert::Infallible;
-use warp::Filter;
+use std::sync::Arc;
 use std::time;
+use warp::Filter;
 
 #[macro_use]
 extern crate log;
-
 
 async fn get_root(s: Arc<settings::Settings>) -> Result<impl warp::Reply, Infallible> {
     Ok(warp::reply::html(format!(
@@ -24,7 +25,6 @@ async fn get_root(s: Arc<settings::Settings>) -> Result<impl warp::Reply, Infall
     )))
 }
 
-
 async fn get_settings(s: Arc<settings::Settings>) -> Result<impl warp::Reply, Infallible> {
     match serde_yaml::to_string(&*s) {
         Ok(settings_str) => Ok(settings_str),
@@ -34,7 +34,7 @@ async fn get_settings(s: Arc<settings::Settings>) -> Result<impl warp::Reply, In
 
 async fn get_metrics(s: Arc<settings::Settings>) -> Result<impl warp::Reply, Infallible> {
     let start = time::Instant::now();
-    let result = scrapinghub::check_api(&s).await;
+    let result  = scrapinghub::check_api(&s).await;
     let duration = start.elapsed();
     Ok(vec![
         result.to_string(),
